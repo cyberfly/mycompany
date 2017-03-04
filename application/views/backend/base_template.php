@@ -14,9 +14,23 @@
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/demo.css">
 	<!-- GOOGLE FONTS -->
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+	
+	<!-- ZINO STYLES -->
+	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/zino.core.css">
+	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/zino.upload.css">
+	
 	<!-- ICONS -->
 	<link rel="apple-touch-icon" sizes="76x76" href="<?php echo base_url(); ?>assets/img/apple-icon.png">
 	<link rel="icon" type="image/png" sizes="96x96" href="<?php echo base_url(); ?>assets/img/favicon.png">
+
+	<script type="text/javascript">
+
+		var config = {
+			'base_url' : "<?php echo base_url(); ?>"
+		};
+
+	</script>
+
 </head>
 
 <body>
@@ -168,6 +182,7 @@
 	<script src="<?php echo base_url(); ?>assets/js/plugins/jquery-easypiechart/jquery.easypiechart.min.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/plugins/chartist/chartist.min.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/klorofil.min.js"></script>
+	<script src="<?php echo base_url(); ?>assets/js/zino.upload.min.js"></script>
 </body>
 
 </html>
@@ -195,6 +210,52 @@
 
 		  
 		});
+
+		
+		// atau download PDF bila klik butang PDF
+
+		$("#downloadPDF").click(function(){
+			
+			//set hidden filter_type kepada PDF
+			$("input[name='filter_type']").val('PDF');
+
+			//submit form
+			$(this).closest("form").submit();
+		});
+
+		// search bila klik butang filter
+
+		$("#filter").click(function(){
+			
+			//set hidden filter_type kepada submit
+			$("input[name='filter_type']").val('submit');
+
+			//submit form
+			$("#filter_records").submit();
+		});
+
+		// ajax upload
+
+		$("#upload").zinoUpload({
+	        url: config.base_url + "employees/uploadProfilePicture",
+	        method: "POST",
+	        name: "userfile",
+	        label: "Upload now",
+	        autoSubmit: true,
+	        change: function (event, ui) {
+	            
+	        },
+	        submit: function (event, ui) {
+	            
+	        },
+	        complete: function (event, ui) {
+	            console.log(ui.response);
+				var image_path = config.base_url + 'uploads/' +ui.response.data.file_name;
+	            $("#upload_preview").prepend("<img src='"+image_path+"' />");
+	        }
+	    });
+
+
 
 	});
 

@@ -6,6 +6,7 @@ class Departments extends CI_Controller{
     {            
     	parent::__construct();
     	$this->load->model("department_model");
+    	$this->load->library('notification');
     }
 
     // paparkan senarai Department
@@ -54,6 +55,9 @@ class Departments extends CI_Controller{
 					);
 
 			$department_id = $this->department_model->create($data);
+
+			//send notification email
+			$this->notification->newEmployeeRegisteredNotification();
 
 			//set success message using flashdata
 			$this->session->set_flashdata('success', 'Rekod berjaya di simpan');
